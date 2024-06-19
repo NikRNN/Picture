@@ -1,5 +1,6 @@
 import modal from "./modules/modal";
 import sliders from "./modules/sliders";
+import forms from "./modules/forms";
 
 window.addEventListener("DOMContentLoaded", () => {
   modal();
@@ -10,4 +11,5 @@ window.addEventListener("DOMContentLoaded", () => {
     ".main-next-btn"
   );
   sliders(".main-slider-item");
+  forms();
 });

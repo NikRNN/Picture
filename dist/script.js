@@ -2,6 +2,79 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/forms.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/forms.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const forms = () => {
+  const form = document.querySelectorAll("form"),
+    inputs = document.querySelectorAll("inputs");
+  const messages = {
+    loading: "Идет передача данных...",
+    success: "Спасибо! Скоро мы свяжемся с Вами",
+    failure: "Что-то пошло не так, попробуйте позже",
+    spinner: "assets/img/spinner.gif",
+    ok: "assets/img/ok.png",
+    fail: "assets/img/fail.png"
+  };
+  const postData = async (url, data) => {
+    let res = await fetch(url, {
+      method: "POST",
+      body: data
+    });
+    return await res.text();
+  };
+  const path = {
+    designer: "assets/server.php",
+    consultation: "assets/consultation.php"
+  };
+  form.forEach(item => {
+    item.addEventListener("submit", e => {
+      e.preventDefault();
+      let statusMessage = document.createElement("div");
+      statusMessage.classList.add("status");
+      item.parentNode.appendChild(statusMessage);
+      item.classList.add("animated__animate", "animate__fadeOutUp");
+      setTimeout(() => {
+        item.style.display = "none";
+      }, 300);
+      let iconMessage = document.createElement("img");
+      iconMessage.setAttribute("src", messages.spinner);
+      iconMessage.classList.add("animated__animate", "fadeInUp");
+      statusMessage.appendChild(iconMessage);
+      let textMessage = document.createElement("div");
+      textMessage.textContent = messages.loading;
+      statusMessage.appendChild(textMessage);
+      const formData = new FormData(item);
+      let api;
+      api.closest(".popup-design") || item.classList.contains("calc_form") ? api = path.designer : api = path.consultation;
+      postData(api, formData).then(() => {
+        textMessage.textContent = messages.success;
+        iconMessage.setAttribute("src", messages.ok);
+      }).catch(() => {
+        textMessage.textContent = messages.failure;
+        iconMessage.setAttribute("src", messages.fail);
+      }).finally(() => {
+        setTimeout(() => {
+          statusMessage.remove();
+          item.style.display = "block";
+          item.classList.remove("animate__fadeOutUp");
+          item.classList.add("animate__fadeInUp");
+        }, 5000);
+      });
+    });
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
+
+/***/ }),
+
 /***/ "./src/js/modules/modal.js":
 /*!*********************************!*\
   !*** ./src/js/modules/modal.js ***!
@@ -252,12 +325,15 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/modal */ "./src/js/modules/modal.js");
 /* harmony import */ var _modules_sliders__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/sliders */ "./src/js/modules/sliders.js");
+/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+
 
 
 window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_modal__WEBPACK_IMPORTED_MODULE_0__["default"])();
   (0,_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".feedback-slider-item", "horizontal", ".main-prev-btn", ".main-next-btn");
   (0,_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".main-slider-item");
+  (0,_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
 });
 /******/ })()
 ;
