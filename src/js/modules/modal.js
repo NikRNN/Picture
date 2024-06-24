@@ -69,7 +69,7 @@ const modal = () => {
   }
 
   showModalWindows(
-    ".button-order",
+    ".button-design",
     ".popup-design",
     ".popup-design .popup-close"
   );

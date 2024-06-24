@@ -20,6 +20,12 @@ const forms = () => {
     return await res.text();
   };
 
+  function clearInputs() {
+    inputs.forEach((item) => {
+      item.value = "";
+    });
+  }
+
   const path = {
     designer: "assets/server.php",
     consultation: "assets/consultation.php",
@@ -69,6 +75,7 @@ const forms = () => {
           setTimeout(() => {
             statusMessage.remove();
             item.style.display = "block";
+            cleanInput();
             item.classList.remove("animate__fadeOutUp");
             item.classList.add("animate__fadeInUp");
           }, 5000);
