@@ -1,6 +1,9 @@
 const forms = () => {
   const form = document.querySelectorAll("form"),
-    inputs = document.querySelectorAll("inputs");
+    inputs = document.querySelectorAll("input"),
+    comments = document.querySelectorAll("textarea"),
+    selects = document.querySelectorAll("select"),
+    uploads = document.querySelectorAll('[name = "upload"]');
 
   const messages = {
     loading: "Идет передача данных...",
@@ -20,16 +23,37 @@ const forms = () => {
     return await res.text();
   };
 
-  function clearInputs() {
+  function clearFormElements() {
     inputs.forEach((item) => {
       item.value = "";
     });
+    comments.forEach((item) => (item.value = ""));
+    selects.forEach((item) => (item.children[0].selected = true));
+    uploads.forEach(
+      (item) => (item.previousElementSibling.textContent = "Файл не выбран")
+    );
   }
 
   const path = {
     designer: "assets/server.php",
     consultation: "assets/consultation.php",
   };
+
+  uploads.forEach((item) => {
+    item.addEventListener("input", () => {
+      console.log(item.files[0]);
+
+      let dots;
+
+      const arr = item.files[0].name.split(".");
+
+      arr[0].length > 6 ? (dots = "...") : (dots = ".");
+
+      const name = arr[0].substring(0, 6) + dots + arr[1];
+
+      item.previousElementSibling.textContent = name;
+    });
+  });
 
   form.forEach((item) => {
     item.addEventListener("submit", (e) => {
@@ -39,14 +63,14 @@ const forms = () => {
       statusMessage.classList.add("status");
       item.parentNode.appendChild(statusMessage);
 
-      item.classList.add("animated__animate", "animate__fadeOutUp");
+      item.classList.add("animate__animated", "animate__fadeOutUp");
       setTimeout(() => {
         item.style.display = "none";
       }, 400);
 
       let statusImg = document.createElement("img");
       statusImg.setAttribute("src", messages.spinner);
-      statusImg.classList.add("animated__animate", "animate__fadeInUp");
+      statusImg.classList.add("animate__animated", "animate__fadeInUp");
       statusMessage.appendChild(statusImg);
 
       let textMessage = document.createElement("div");
@@ -71,14 +95,13 @@ const forms = () => {
           textMessage.textContent = messages.failure;
         })
         .finally(() => {
-          clearInputs();
+          clearFormElements();
           setTimeout(() => {
             statusMessage.remove();
             item.style.display = "block";
-            cleanInput();
             item.classList.remove("animate__fadeOutUp");
             item.classList.add("animate__fadeInUp");
-          }, 5000);
+          }, 4000);
         });
     });
   });

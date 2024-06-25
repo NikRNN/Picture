@@ -14,7 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const forms = () => {
   const form = document.querySelectorAll("form"),
-    inputs = document.querySelectorAll("inputs");
+    inputs = document.querySelectorAll("input"),
+    comments = document.querySelectorAll("textarea");
   const messages = {
     loading: "Идет передача данных...",
     success: "Спасибо! Скоро мы свяжемся с Вами",
@@ -30,10 +31,11 @@ const forms = () => {
     });
     return await res.text();
   };
-  function clearInputs() {
+  function clearInputsAndTextArea() {
     inputs.forEach(item => {
       item.value = "";
     });
+    comments.forEach(item => item.value = "");
   }
   const path = {
     designer: "assets/server.php",
@@ -68,14 +70,13 @@ const forms = () => {
         statusImg.setAttribute("src", messages.fail);
         textMessage.textContent = messages.failure;
       }).finally(() => {
-        clearInputs();
+        clearInputsAndTextArea();
         setTimeout(() => {
           statusMessage.remove();
           item.style.display = "block";
-          cleanInput();
           item.classList.remove("animate__fadeOutUp");
           item.classList.add("animate__fadeInUp");
-        }, 5000);
+        }, 3000);
       });
     });
   });
