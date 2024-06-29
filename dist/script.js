@@ -20,6 +20,14 @@ const checkLanguageInput = selector => {
         e.preventDefault();
       }
     });
+    input.addEventListener("input", () => {
+      if (input.value.match(/[^а-яё 0-9]/gi)) {
+        input.value = "";
+        setTimeout(() => {
+          input.value = "";
+        }, 0);
+      }
+    });
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (checkLanguageInput);
@@ -149,6 +157,12 @@ const mask = selector => {
       if (this.value.length == 2) {
         this.value = "";
       }
+    } else if (event.type === "click") {
+      if (this.value.length == 2) {
+        setCursorPosition(3, this);
+      } else {
+        setCursorPosition(this.value.length, this);
+      }
     } else {
       setCursorPosition(this.value.length, this);
     }
@@ -170,6 +184,7 @@ const mask = selector => {
     input.addEventListener("input", createMask);
     input.addEventListener("focus", createMask);
     input.addEventListener("blur", createMask);
+    input.addEventListener("click", createMask);
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (mask);

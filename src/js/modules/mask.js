@@ -21,6 +21,12 @@ const mask = (selector) => {
       if (this.value.length == 2) {
         this.value = "";
       }
+    } else if (event.type === "click") {
+      if (this.value.length == 2) {
+        setCursorPosition(3, this);
+      } else {
+        setCursorPosition(this.value.length, this);
+      }
     } else {
       setCursorPosition(this.value.length, this);
     }
@@ -47,6 +53,7 @@ const mask = (selector) => {
     input.addEventListener("input", createMask);
     input.addEventListener("focus", createMask);
     input.addEventListener("blur", createMask);
+    input.addEventListener("click", createMask);
   });
 };
 

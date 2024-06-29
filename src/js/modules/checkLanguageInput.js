@@ -7,6 +7,16 @@ const checkLanguageInput = (selector) => {
         e.preventDefault();
       }
     });
+
+    input.addEventListener("input", () => {
+      if (input.value.match(/[^а-яё 0-9]/gi)) {
+        input.value = "";
+
+        setTimeout(() => {
+          input.value = "";
+        }, 0);
+      }
+    });
   });
 };
 
