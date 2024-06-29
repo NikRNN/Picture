@@ -1,6 +1,8 @@
 import modal from "./modules/modal";
 import sliders from "./modules/sliders";
 import forms from "./modules/forms";
+import mask from "./modules/mask";
+import checkLanguageInput from "./modules/checkLanguageInput";
 
 window.addEventListener("DOMContentLoaded", () => {
   modal();
@@ -12,4 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   sliders(".main-slider-item");
   forms();
+  mask('[name = "phone"]');
+  checkLanguageInput('[name="name"]');
+  checkLanguageInput('[name="message"]');
 });
