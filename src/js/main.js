@@ -4,6 +4,7 @@ import forms from "./modules/forms";
 import mask from "./modules/mask";
 import checkLanguageInput from "./modules/checkLanguageInput";
 import showMoreStyles from "./modules/showMoreStyles";
+import calc from "./modules/calc";
 
 window.addEventListener("DOMContentLoaded", () => {
   modal();
@@ -19,4 +20,5 @@ window.addEventListener("DOMContentLoaded", () => {
   checkLanguageInput('[name="name"]');
   checkLanguageInput('[name="message"]');
   showMoreStyles(".button-styles", "#styles .row");
+  calc("#size", "#material", "#options", ".promocode", ".calc-price");
 });

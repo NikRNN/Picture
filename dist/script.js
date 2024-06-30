@@ -2,6 +2,42 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/calc.js":
+/*!********************************!*\
+  !*** ./src/js/modules/calc.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const calc = (size, material, options, promocod, result) => {
+  const sizeBlock = document.querySelector(size),
+    materilBlock = document.querySelector(material),
+    optionsBlock = document.querySelector(options),
+    promocodeBlock = document.querySelector(promocod),
+    resultBlock = document.querySelector(result);
+  let sum = 0;
+  const calcForm = () => {
+    sum = Math.round(+sizeBlock.value * +materilBlock.value + +optionsBlock.value);
+    if (sizeBlock.value == "" || materilBlock.value == "") {
+      result.textContent = `Выберите размер и материалы картины`;
+    } else if (promocodeBlock.value === "IWANTPOPART") {
+      resultBlock.textContent = Math.round(sum * 0.7);
+    } else {
+      resultBlock.textContent = sum;
+    }
+  };
+  sizeBlock.addEventListener("change", calcForm);
+  materilBlock.addEventListener("change", calcForm);
+  optionsBlock.addEventListener("change", calcForm);
+  promocodeBlock.addEventListener("input", calcForm);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calc);
+
+/***/ }),
+
 /***/ "./src/js/modules/checkLanguageInput.js":
 /*!**********************************************!*\
   !*** ./src/js/modules/checkLanguageInput.js ***!
@@ -44,6 +80,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/request */ "./src/js/services/request.js");
+
 const forms = () => {
   const form = document.querySelectorAll("form"),
     inputs = document.querySelectorAll("input"),
@@ -57,13 +95,6 @@ const forms = () => {
     spinner: "assets/img/spinner.gif",
     ok: "assets/img/ok.png",
     fail: "assets/img/fail.png"
-  };
-  const postData = async (url, data) => {
-    let res = await fetch(url, {
-      method: "POST",
-      body: data
-    });
-    return await res.text();
   };
   function clearFormElements() {
     inputs.forEach(item => {
@@ -108,7 +139,7 @@ const forms = () => {
       let api;
       item.closest(".popup-design") || item.classList.contains("calc_form") ? api = path.designer : api = path.consultation;
       console.log(api);
-      postData(api, formData).then(res => {
+      (0,_services_request__WEBPACK_IMPORTED_MODULE_0__.postData)(api, formData).then(res => {
         console.log(res);
         statusImg.setAttribute("src", messages.ok);
         textMessage.textContent = messages.success;
@@ -302,17 +333,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/request */ "./src/js/services/request.js");
+
 const showMoreStyles = (trigger, selector) => {
   const triggerBtn = document.querySelector(trigger),
-    elements = document.querySelectorAll(selector);
-  triggerBtn.addEventListener("click", () => {
-    elements.forEach(item => {
-      item.classList.add("animate__animated", "animate__fadeInUp");
-      item.classList.remove("hidden-lg", "hidden-md", "hidden-sm", "hidden-xs");
-      item.classList.add("col-sm-3", "col-sm-offset-0", "col-xs-10", "col-xs-offset-1");
-    });
-    triggerBtn.style.display = "none";
+    wrapper = document.querySelector(selector);
+  triggerBtn.addEventListener("click", function () {
+    (0,_services_request__WEBPACK_IMPORTED_MODULE_0__.getData)("http://localhost:3000/styles").then(res => loadCards(res));
+    this.remove();
   });
+  function loadCards(cards) {
+    cards.forEach(item => {
+      let card = document.createElement("div");
+      card.classList.add("animate__animated", "animate__fadeInUp", "col-sm-3", "col-sm-offset-0", "col-xs-10", "col-xs-offset-1");
+      let {
+        src,
+        title,
+        link
+      } = item;
+      card.innerHTML = `
+            		<div class='styles-block'>
+						<img src=${src} alt></img>
+						<h4>${title}</h4>
+						<a href=${link}>Подробнее</a>
+					</div>`;
+      wrapper.append(card);
+    });
+  }
+  // elements = document.querySelectorAll(selector);
+
+  //простой вариант показа доп элементов без подзагрузки с сервера (не забудь для этого раскомментировать верстку с карточками и изменить параметры в вызове showMoreStyles: вместо wrapper вернуть стиль карточек)
+  // triggerBtn.addEventListener("click", () => {
+  //   elements.forEach((item) => {
+  //     item.classList.add("animate__animated", "animate__fadeInUp");
+
+  //     item.classList.remove("hidden-lg", "hidden-md", "hidden-sm", "hidden-xs");
+
+  //     item.classList.add(
+  //       "col-sm-3",
+  //       "col-sm-offset-0",
+  //       "col-xs-10",
+  //       "col-xs-offset-1"
+  //     );
+  //   });
+
+  //   triggerBtn.style.display = "none";
+  // });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (showMoreStyles);
 
@@ -402,6 +468,35 @@ const sliders = (slider, div, prev, next) => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sliders);
 
+/***/ }),
+
+/***/ "./src/js/services/request.js":
+/*!************************************!*\
+  !*** ./src/js/services/request.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getData: () => (/* binding */ getData),
+/* harmony export */   postData: () => (/* binding */ postData)
+/* harmony export */ });
+const postData = async (url, data) => {
+  let res = await fetch(url, {
+    method: "POST",
+    body: data
+  });
+  return await res.text();
+};
+const getData = async url => {
+  let res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Could not fetch ${url}, status: ${fetch.status}`);
+  }
+  return await res.json();
+};
+
+
 /***/ })
 
 /******/ 	});
@@ -471,6 +566,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_mask__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/mask */ "./src/js/modules/mask.js");
 /* harmony import */ var _modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkLanguageInput */ "./src/js/modules/checkLanguageInput.js");
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
+/* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+
 
 
 
@@ -485,7 +582,8 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name = "phone"]');
   (0,_modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   (0,_modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
-  (0,_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", ".styles-2");
+  (0,_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", "#styles .row");
+  (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price");
 });
 /******/ })()
 ;
