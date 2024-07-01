@@ -1,11 +1,17 @@
 import { postData } from "../services/request";
 
-const forms = () => {
+const forms = (userInfo) => {
   const form = document.querySelectorAll("form"),
     inputs = document.querySelectorAll("input"),
     comments = document.querySelectorAll("textarea"),
     selects = document.querySelectorAll("select"),
-    uploads = document.querySelectorAll('[name = "upload"]');
+    uploads = document.querySelectorAll('[name = "upload"]'),
+    select = document.querySelectorAll("select"),
+    sizeBlock = document.querySelector("#size"),
+    materialBlock = document.querySelector("#material"),
+    optionsBlock = document.querySelector("#options"),
+    promocodeBlock = document.querySelector(".promocod"),
+    resultBlock = document.querySelector(".calc-price");
 
   const messages = {
     loading: "Идет передача данных...",
@@ -71,10 +77,20 @@ const forms = () => {
       statusMessage.appendChild(textMessage);
 
       const formData = new FormData(item);
-      let api;
+      if (item.getAttribute("data-user") === "user") {
+        for (let elem in userInfo) {
+          formData.append(elem, userInfo[elem]);
+        }
+      }
+
+      let api = path.consultation;
       item.closest(".popup-design") || item.classList.contains("calc_form")
         ? (api = path.designer)
         : (api = path.consultation);
+      if (item.getAttribute("data-user") === "user") {
+        api = path.consultation;
+      }
+
       console.log(api);
 
       postData(api, formData)

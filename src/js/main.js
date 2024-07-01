@@ -7,6 +7,8 @@ import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
 
 window.addEventListener("DOMContentLoaded", () => {
+  const pictureInfo = {};
+
   modal();
   sliders(
     ".feedback-slider-item",
@@ -15,10 +17,17 @@ window.addEventListener("DOMContentLoaded", () => {
     ".main-next-btn"
   );
   sliders(".main-slider-item");
-  forms();
+  forms(pictureInfo);
   mask('[name = "phone"]');
   checkLanguageInput('[name="name"]');
   checkLanguageInput('[name="message"]');
   showMoreStyles(".button-styles", "#styles .row");
-  calc("#size", "#material", "#options", ".promocode", ".calc-price");
+  calc(
+    "#size",
+    "#material",
+    "#options",
+    ".promocode",
+    ".calc-price",
+    pictureInfo
+  );
 });
