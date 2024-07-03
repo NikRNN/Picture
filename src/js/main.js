@@ -5,6 +5,7 @@ import mask from "./modules/mask";
 import checkLanguageInput from "./modules/checkLanguageInput";
 import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
+import filter from "./modules/filter";
 
 window.addEventListener("DOMContentLoaded", () => {
   const pictureInfo = {};
@@ -30,4 +31,5 @@ window.addEventListener("DOMContentLoaded", () => {
     ".calc-price",
     pictureInfo
   );
+  filter();
 });

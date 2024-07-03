@@ -12,27 +12,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const calc = (size, material, options, promocod, result) => {
+const calc = (size, material, options, promocod, result, infoUser) => {
   const sizeBlock = document.querySelector(size),
-    materilBlock = document.querySelector(material),
+    materialBlock = document.querySelector(material),
     optionsBlock = document.querySelector(options),
     promocodeBlock = document.querySelector(promocod),
     resultBlock = document.querySelector(result);
   let sum = 0;
   const calcForm = () => {
-    sum = Math.round(+sizeBlock.value * +materilBlock.value + +optionsBlock.value);
-    if (sizeBlock.value == "" || materilBlock.value == "") {
-      result.textContent = `Выберите размер и материалы картины`;
+    sum = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
+    if (sizeBlock.value == "" || materialBlock.value == "") {
+      resultBlock.textContent = `Выберите размер и материалы картины`;
     } else if (promocodeBlock.value === "IWANTPOPART") {
       resultBlock.textContent = Math.round(sum * 0.7);
     } else {
       resultBlock.textContent = sum;
     }
   };
-  sizeBlock.addEventListener("change", calcForm);
-  materilBlock.addEventListener("change", calcForm);
-  optionsBlock.addEventListener("change", calcForm);
-  promocodeBlock.addEventListener("input", calcForm);
+  sizeBlock.addEventListener("change", () => {
+    calcForm();
+    infoUser.size = sizeBlock.value + ", " + sizeBlock.options[sizeBlock.selectedIndex].text;
+    console.log(infoUser);
+  });
+  materialBlock.addEventListener("change", () => {
+    calcForm();
+    infoUser.material = materialBlock.value + ", " + materialBlock.options[materialBlock.selectedIndex].text;
+    console.log(infoUser);
+  });
+  optionsBlock.addEventListener("change", () => {
+    calcForm();
+    infoUser.options = optionsBlock.value + ", " + optionsBlock.options[optionsBlock.selectedIndex].text;
+    console.log(infoUser);
+  });
+  promocodeBlock.addEventListener("input", () => {
+    calcForm();
+    infoUser.promocode = promocodeBlock.value;
+    console.log(infoUser);
+  });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calc);
 
@@ -70,6 +86,47 @@ const checkLanguageInput = selector => {
 
 /***/ }),
 
+/***/ "./src/js/modules/filter.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/filter.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const filter = () => {
+  const wrapperLi = document.querySelector(".portfolio-menu"),
+    li = wrapperLi.querySelectorAll("li"),
+    divs = document.querySelectorAll(".portfolio-block"),
+    noPortfolio = document.querySelector(".portfolio-no");
+  wrapperLi.addEventListener("click", e => {
+    const target = e.target;
+    let invisible;
+    const classesTarget = [...target.classList];
+    divs.forEach(item => {
+      item.classList.remove("animate__animated", "animate__fadeIn");
+      noPortfolio.classList.remove("animate__animated", "animate__fadeIn");
+      if (classesTarget.some(className => item.classList.contains(className))) {
+        item.style.display = "block";
+        item.classList.add("animate__animated", "animate__fadeIn");
+        target.classList.add("active");
+        invisible = true;
+      } else {
+        item.style.display = "none";
+        noPortfolio.classList.add("animate__animated", "animate__fadeIn");
+      }
+    });
+    noPortfolio.style.display = invisible ? "none" : "block";
+    li.forEach(item => item.classList.remove("active"));
+    target.classList.add("active");
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (filter);
+
+/***/ }),
+
 /***/ "./src/js/modules/forms.js":
 /*!*********************************!*\
   !*** ./src/js/modules/forms.js ***!
@@ -82,12 +139,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _services_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/request */ "./src/js/services/request.js");
 
-const forms = () => {
+const forms = userInfo => {
   const form = document.querySelectorAll("form"),
     inputs = document.querySelectorAll("input"),
     comments = document.querySelectorAll("textarea"),
     selects = document.querySelectorAll("select"),
-    uploads = document.querySelectorAll('[name = "upload"]');
+    uploads = document.querySelectorAll('[name = "upload"]'),
+    select = document.querySelectorAll("select"),
+    sizeBlock = document.querySelector("#size"),
+    materialBlock = document.querySelector("#material"),
+    optionsBlock = document.querySelector("#options"),
+    promocodeBlock = document.querySelector(".promocod"),
+    resultBlock = document.querySelector(".calc-price");
   const messages = {
     loading: "Идет передача данных...",
     success: "Спасибо! Скоро мы свяжемся с Вами",
@@ -136,8 +199,16 @@ const forms = () => {
       textMessage.textContent = messages.loading;
       statusMessage.appendChild(textMessage);
       const formData = new FormData(item);
-      let api;
+      if (item.getAttribute("data-user") === "user") {
+        for (let elem in userInfo) {
+          formData.append(elem, userInfo[elem]);
+        }
+      }
+      let api = path.consultation;
       item.closest(".popup-design") || item.classList.contains("calc_form") ? api = path.designer : api = path.consultation;
+      if (item.getAttribute("data-user") === "user") {
+        api = path.consultation;
+      }
       console.log(api);
       (0,_services_request__WEBPACK_IMPORTED_MODULE_0__.postData)(api, formData).then(res => {
         console.log(res);
@@ -567,6 +638,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkLanguageInput */ "./src/js/modules/checkLanguageInput.js");
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+/* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+
 
 
 
@@ -575,15 +648,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener("DOMContentLoaded", () => {
+  const pictureInfo = {};
   (0,_modules_modal__WEBPACK_IMPORTED_MODULE_0__["default"])();
   (0,_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".feedback-slider-item", "horizontal", ".main-prev-btn", ".main-next-btn");
   (0,_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])(".main-slider-item");
-  (0,_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  (0,_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(pictureInfo);
   (0,_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name = "phone"]');
   (0,_modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   (0,_modules_checkLanguageInput__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
   (0,_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", "#styles .row");
-  (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price");
+  (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price", pictureInfo);
+  (0,_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
 });
 /******/ })()
 ;

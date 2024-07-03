@@ -18,14 +18,13 @@ const calc = (size, material, options, promocod, result, infoUser) => {
       resultBlock.textContent = Math.round(sum * 0.7);
     } else {
       resultBlock.textContent = sum;
-      infoUser.result = sum;
     }
   };
 
   sizeBlock.addEventListener("change", () => {
     calcForm();
     infoUser.size =
-      sizeBlock.value + " " + sizeBlock.options[sizeBlock.selectedIndex].text;
+      sizeBlock.value + ", " + sizeBlock.options[sizeBlock.selectedIndex].text;
 
     console.log(infoUser);
   });
@@ -33,7 +32,7 @@ const calc = (size, material, options, promocod, result, infoUser) => {
     calcForm();
     infoUser.material =
       materialBlock.value +
-      " " +
+      ", " +
       materialBlock.options[materialBlock.selectedIndex].text;
 
     console.log(infoUser);
@@ -42,7 +41,7 @@ const calc = (size, material, options, promocod, result, infoUser) => {
     calcForm();
     infoUser.options =
       optionsBlock.value +
-      " " +
+      ", " +
       optionsBlock.options[optionsBlock.selectedIndex].text;
 
     console.log(infoUser);
