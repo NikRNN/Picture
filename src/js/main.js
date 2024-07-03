@@ -6,6 +6,7 @@ import checkLanguageInput from "./modules/checkLanguageInput";
 import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
 import filter from "./modules/filter";
+import showImg from "./modules/showImg";
 
 window.addEventListener("DOMContentLoaded", () => {
   const pictureInfo = {};
@@ -32,4 +33,5 @@ window.addEventListener("DOMContentLoaded", () => {
     pictureInfo
   );
   filter();
+  showImg(".sizes-block");
 });

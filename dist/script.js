@@ -394,6 +394,41 @@ const modal = () => {
 
 /***/ }),
 
+/***/ "./src/js/modules/showImg.js":
+/*!***********************************!*\
+  !*** ./src/js/modules/showImg.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const showImg = block => {
+  const blocks = document.querySelectorAll(block);
+  function showImgMouse(item) {
+    const img = item.querySelector("img");
+    img.src = img.src.slice(0, -4) + "-1.png";
+    item.querySelectorAll("p:not(.sizes-hit").forEach(elem => elem.style.display = "none");
+  }
+  function hideImgMouse(item) {
+    const img = item.querySelector("img");
+    img.src = img.src.slice(0, -6) + ".png";
+    item.querySelectorAll("p:not(.sizes-hit)").forEach(elem => elem.style.display = "block");
+  }
+  blocks.forEach(elem => {
+    elem.addEventListener("mouseover", () => {
+      showImgMouse(elem);
+    });
+    elem.addEventListener("mouseout", () => {
+      hideImgMouse(elem);
+    });
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (showImg);
+
+/***/ }),
+
 /***/ "./src/js/modules/showMoreStyles.js":
 /*!******************************************!*\
   !*** ./src/js/modules/showMoreStyles.js ***!
@@ -639,6 +674,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+/* harmony import */ var _modules_showImg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/showImg */ "./src/js/modules/showImg.js");
+
 
 
 
@@ -659,6 +696,7 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(".button-styles", "#styles .row");
   (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price", pictureInfo);
   (0,_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
+  (0,_modules_showImg__WEBPACK_IMPORTED_MODULE_8__["default"])(".sizes-block");
 });
 /******/ })()
 ;
