@@ -7,6 +7,7 @@ import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
 import filter from "./modules/filter";
 import showImg from "./modules/showImg";
+import accordeon from "./modules/accordeon";
 
 window.addEventListener("DOMContentLoaded", () => {
   const pictureInfo = {};
@@ -34,4 +35,5 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   filter();
   showImg(".sizes-block");
+  accordeon(".accordion-heading", ".accordion-block");
 });
