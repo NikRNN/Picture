@@ -8,6 +8,8 @@ import calc from "./modules/calc";
 import filter from "./modules/filter";
 import showImg from "./modules/showImg";
 import accordeon from "./modules/accordeon";
+import burger from "./modules/burger";
+import scrolling from "./modules/scrolling";
 
 window.addEventListener("DOMContentLoaded", () => {
   const pictureInfo = {};
@@ -36,4 +38,6 @@ window.addEventListener("DOMContentLoaded", () => {
   filter();
   showImg(".sizes-block");
   accordeon(".accordion-heading", ".accordion-block");
+  burger(".burger-menu", ".burger");
+  scrolling(".pageup");
 });
