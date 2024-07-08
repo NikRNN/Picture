@@ -10,6 +10,7 @@ import showImg from "./modules/showImg";
 import accordeon from "./modules/accordeon";
 import burger from "./modules/burger";
 import scrolling from "./modules/scrolling";
+import drop from "./modules/drop";
 
 window.addEventListener("DOMContentLoaded", () => {
   const pictureInfo = {};
@@ -40,4 +41,5 @@ window.addEventListener("DOMContentLoaded", () => {
   accordeon(".accordion-heading", ".accordion-block");
   burger(".burger-menu", ".burger");
   scrolling(".pageup");
+  drop();
 });
