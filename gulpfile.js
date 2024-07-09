@@ -19,7 +19,7 @@ gulp.task("build-js", () => {
     .src("./src/js/main.js")
     .pipe(
       webpack({
-        mode: "development",
+        mode: "production",
         output: {
           filename: "script.js",
         },
