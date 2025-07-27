@@ -34,8 +34,7 @@ const forms = (userInfo) => {
   }
 
   const path = {
-    designer: "assets/server.php",
-    consultation: "assets/consultation.php",
+    server: "assets/server.php",
   };
 
   uploads.forEach((item) => {
@@ -83,13 +82,13 @@ const forms = (userInfo) => {
         }
       }
 
-      let api = path.consultation;
-      item.closest(".popup-design") || item.classList.contains("calc_form")
-        ? (api = path.designer)
-        : (api = path.consultation);
-      if (item.getAttribute("data-user") === "user") {
-        api = path.consultation;
-      }
+      let api = path.server;
+      // item.closest(".popup-design") || item.classList.contains("calc_form")
+      //   ? (api = path.designer)
+      //   : (api = path.consultation);
+      // if (item.getAttribute("data-user") === "user") {
+      //   api = path.consultation;
+      // }
 
       console.log(api);
 

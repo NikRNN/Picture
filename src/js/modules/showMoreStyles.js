@@ -5,7 +5,7 @@ const showMoreStyles = (trigger, selector) => {
     wrapper = document.querySelector(selector);
 
   triggerBtn.addEventListener("click", function () {
-    getData("http://localhost:3000/styles").then((res) => loadCards(res));
+    getData("assets/db.json").then((res) => loadCards(res.styles));
 
     this.remove();
   });
