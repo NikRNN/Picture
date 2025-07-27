@@ -10,7 +10,6 @@
 │   │   ├── fonts/
 │   │   ├── img/
 │   │   ├── less/
-│   │   ├── consultation.php
 │   │   ├── db.json
 │   │   └── server.php
 │   ├── index.html
@@ -21,7 +20,6 @@
 │   │   ├── fonts/
 │   │   ├── img/
 │   │   ├── less/
-│   │   ├── consultation.php
 │   │   ├── db.json
 │   │   └── server.php
 │   ├── js/
