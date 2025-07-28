@@ -58,6 +58,7 @@
 - Gulp
 - Vanilla JavaScript
 - webpack
+- json-server
 
 **Установка**
 
